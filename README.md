@@ -12,11 +12,9 @@ go get github.com/tyrantkemp/beego-api-1
 
 第一次运行：bee run -gendoc=true -downdoc=true  初始化api文档并下载swagger文件
 
-######
-
-如果数据库新增表，想要项目自动生成对应的model,controller,router,可在根目录下直接 
-bee generate appcode -tables="tablename" -conn="root:root@tcp(127.0.0.1:3306)/beegoApi" -level=1
-其中（-level:  [1 | 2 | 3], 1 = models; 2 = models,controllers; 3 = models,controllers,router）
-如果要更新全部model：
-bee generate appcode -conn="root:root@tcp(127.0.0.1:3306)/beegoApi" -level=3
+如果数据库新增表，想要项目自动生成对应的model,controller,router,可在根目录下直接<br>
+bee generate appcode -tables="tablename" -conn="root:root@tcp(127.0.0.1:3306)/beegoApi" -level=1<br>
+其中（-level:  [1 | 2 | 3], 1 = models; 2 = models,controllers; 3 = models,controllers,router）<br>
+如果要更新全部model <br>
+bee generate appcode -conn="root:root@tcp(127.0.0.1:3306)/beegoApi" -level=3<br>
 
