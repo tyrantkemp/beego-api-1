@@ -1,0 +1,14 @@
+2018/02/25 20:45:49.855 [I] [logs.go:126] object GetAll
+2018/02/25 20:45:58.063 [I] [logs.go:126] object GetAll
+2018/02/25 20:46:58.551 [I] [logs.go:126] object GetAll info 
+2018/02/25 20:46:58.551 [D] [logs.go:128] object GetAll debug
+2018/02/25 20:46:58.551 [E] [logs.go:120] object GetAll error
+2018/02/25 20:51:43.132 [I] [object.go:89] object GetAll info 
+2018/02/25 20:51:43.132 [D] [object.go:90] object GetAll debug
+2018/02/25 20:51:43.132 [E] [object.go:91] object GetAll error
+2018/02/25 20:52:29.625 [I] [object.go:89] object GetAll info 
+2018/02/25 20:52:29.625 [D] [object.go:90] object GetAll debug
+2018/02/25 20:52:29.625 [E] [object.go:91] object GetAll error
+2018/02/25 21:03:03.214 [I] [object.go:89] object GetAll info 
+2018/02/25 21:03:03.214 [D] [object.go:90] object GetAll debug
+2018/02/25 21:03:03.214 [E] [object.go:91] object GetAll error

@@ -20,16 +20,19 @@ func InitLogs() {
 	consolelogs.EnableFuncCallDepth(true)
 	consolelogs.SetLogFuncCallDepth(4)
 
-
 	// 生产环境
 	filelogs = logs.NewLogger(10000)
 	level := beego.AppConfig.String("log::level")
-	filelogs.SetLogger(logs.AdapterMultiFile, `{"filename":"logs/api.log","seperate":["emergency","alert","ctritical",
-"error","warning","notice","info","debug"],
-"level":`+ level+ `,"daily":true,"maxdays":10}`)
+	//
+	filelogs.SetLogger(logs.AdapterMultiFile, `{"filename":"logs/api.log",
+		"separate":["emergency", "alert", "critical", "error", "warning", "notice", "info", "debug"],
+		"level":`+level+`,
+		"daily":true,
+		"maxdays":10}`)
 
 	filelogs.Async()
 	filelogs.EnableFuncCallDepth(true)
+	filelogs.SetLogFuncCallDepth(4)
 	runmode = strings.TrimSpace(strings.ToLower(beego.AppConfig.String("runmode")))
 	if runmode == "" {
 		runmode = "dev"
