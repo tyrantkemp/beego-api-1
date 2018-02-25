@@ -2,6 +2,8 @@ package controllers
 
 import "net/http"
 
+
+// a example of jsonrpc
 type Args struct {
 	Who string
 }
