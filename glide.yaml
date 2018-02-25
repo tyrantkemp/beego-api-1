@@ -1,0 +1,23 @@
+package: beego-api-1
+import:
+- package: github.com/astaxie/beego
+  version: ^1.9.2
+  subpackages:
+  - cache
+  - cache/redis
+  - context/param
+  - logs
+  - orm
+- package: github.com/go-sql-driver/mysql
+  version: ^1.3.0
+- package: github.com/gorilla/rpc
+  version: ^1.1.0
+  subpackages:
+  - json
+- package: github.com/pkg/errors
+  version: ^0.8.0
+testImport:
+- package: github.com/smartystreets/goconvey
+  version: ^1.6.3
+  subpackages:
+  - convey
