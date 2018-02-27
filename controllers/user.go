@@ -7,12 +7,19 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/astaxie/beego"
+	_ "github.com/astaxie/beego"
 )
 
 // UserController operations for User
 type UserController struct {
-	beego.Controller
+	BaseController
+}
+
+func (c* UserController)Prepare()  {
+	//先执行
+	c.BaseController.Prepare()
+	//如果一个Controller的所有Action都需要登录验证，则将验证放到Prepare
+	c.checkLogin()
 }
 
 // URLMapping ...

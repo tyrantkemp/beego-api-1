@@ -7,13 +7,20 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/astaxie/beego"
+	_"github.com/astaxie/beego"
 )
 
 // ResourceController operations for Resource
 type ResourceController struct {
-	beego.Controller
+	BaseController
 }
+
+func (c* ResourceController)Prepare()  {
+	c.BaseController.Prepare()
+	c.checkLogin()
+}
+
+
 
 // URLMapping ...
 func (c *ResourceController) URLMapping() {

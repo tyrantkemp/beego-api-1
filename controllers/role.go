@@ -7,12 +7,19 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/astaxie/beego"
+	_"github.com/astaxie/beego"
 )
 
 // RoleController operations for Role
 type RoleController struct {
-	beego.Controller
+	BaseController
+}
+
+func (c* RoleController) Prepare() {
+	//先执行
+	c.BaseController.Prepare()
+	//如果一个Controller的所有Action都需要登录验证，则将验证放到Prepare
+	c.checkLogin()
 }
 
 // URLMapping ...

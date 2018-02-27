@@ -11,12 +11,27 @@ import (
 	"beego-api-1/controllers"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/plugins/cors"
 )
 
 func init() {
+
+	// 允许跨域
+	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Content-Type"},
+		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Content-Type"},
+		AllowCredentials: true,
+	}))
+
 	ns := beego.NewNamespace("/v1",
 
-
+		beego.NSNamespace("/home",
+			beego.NSInclude(
+				&controllers.HomeController{},
+			),
+		),
 		beego.NSNamespace("/resource",
 			beego.NSInclude(
 				&controllers.ResourceController{},
@@ -29,17 +44,6 @@ func init() {
 			),
 		),
 
-		beego.NSNamespace("/role_resource_rel",
-			beego.NSInclude(
-				&controllers.RoleResourceRelController{},
-			),
-		),
-
-		beego.NSNamespace("/role_user_rel",
-			beego.NSInclude(
-				&controllers.RoleUserRelController{},
-			),
-		),
 
 		beego.NSNamespace("/user",
 			beego.NSInclude(

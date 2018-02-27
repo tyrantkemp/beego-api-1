@@ -9,6 +9,12 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
+type Login struct {
+	UserName string
+	UserPwd  string
+}
+
+
 type User struct {
 	Id       int    `orm:"column(id);auto"`
 	RealName string `orm:"column(real_name);size(255)"`
@@ -156,4 +162,14 @@ func DeleteUser(id int) (err error) {
 		}
 	}
 	return
+}
+
+
+func GetUserByNameAndPwd(username string,userpwd string)(*User,error){
+	u:=User{}
+	err:=orm.NewOrm().QueryTable(new(User)).Filter("user_name",username).Filter("user_pwd",userpwd).One(&u)
+	if err!=nil{
+		return nil,err
+	}
+	return &u,nil
 }

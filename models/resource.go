@@ -157,30 +157,28 @@ func DeleteResource(id int) (err error) {
 
 // 根据用户id获取包含的权限url
 func GetResouceUrlByUserId(userId int) []*Resource {
-	resources := make([]*Resource, 0)
-
+	//resources := make([]*Resource, 0)
+	var resources []*Resource
 	key := fmt.Sprintf("test_userresourcese_urls:%v", userId)
 	if err := utils.GetCache(key, resources); err == nil {
 		return resources
 	}
-
 	user, err := GetUserById(userId)
 	if err != nil || user == nil {
+		utils.LogInfo("获取用户信息失败")
 		return resources
 	}
 	o := orm.NewOrm()
 
 	if user.IsAdmin == true {
 		sql := fmt.Sprintf("SELECT  * from resource ORDER BY seq ASC,id asc ")
-		o.Raw(sql).QueryRows(resources)
+		o.Raw(sql).QueryRows(&resources)
 	} else {
 		sql := fmt.Sprintf("select T0.* from %s as T0 INNER JOIN %s as T1 ON T0.id=T1.resource_id INNER JOIN %s as T2 ON T1.role_id=T2.role_id WHERE T2.backend_user_id=%v "+
-			"ORDER BY T0.seq ASC ,T0.id ASC","resource", "role_resource_rel", "role_user_rel", userId)
-		o.Raw(sql).QueryRows(resources)
+			"ORDER BY T0.seq ASC ,T0.id ASC", "resource", "role_resource_rel", "role_user_rel", userId)
+		o.Raw(sql).QueryRows(&resources)
 	}
 
-	// 保存进redis
-	utils.SetCache(key, resources, 30)
 	return resources
 
 }

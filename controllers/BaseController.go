@@ -24,10 +24,23 @@ func (c *BaseController) Prepare() {
 
 //从session里取用户信息
 func (c *BaseController) adapterUserInfo() {
-	a := c.GetSession(enums.CURRENT_USER)
+
+	// session
+	/*a := c.GetSession(enums.CURRENT_USER)
 	if a != nil {
 		c.curUser = a.(models.User)
 		c.Data[enums.CURRENT_USER] = a
+	}*/
+
+	//redis
+	token := c.Ctx.Request.Header.Get("token")
+	var user models.User
+	utils.GetCache(token, &user)
+/*	if err != nil {
+		c.jsonResult(enums.JRCodeFail, "从redis获取用户信息失败", err)
+	}*/
+	if &user != nil {
+		c.curUser = user
 	}
 
 }
@@ -46,21 +59,37 @@ func (c *BaseController) setUserToSession(userId int) error {
 	return nil
 }
 
+//
+func (c *BaseController) setUserToRedis(token string, userId int, expireTime int) error {
+	user, err := models.GetUserById(userId)
+	if err != nil {
+		return err
+	}
+	resouceUrls := models.GetResouceUrlByUserId(userId)
+	for _, item := range resouceUrls {
+		user.ResourceUrlList = append(user.ResourceUrlList, strings.TrimSpace(item.UrlFor))
+	}
+	utils.SetCache(token, user, expireTime)
+	return nil
+
+}
+
 // checkLogin判断用户是否登录，未登录则跳转至登录页面
 // 一定要在BaseController.Prepare()后执行
 func (c *BaseController) checkLogin() {
 	if c.curUser.Id == 0 {
 		//登录页面地址
-		urlstr := c.URLFor("HomeController.Login") + "?url="
+		//urlstr := c.URLFor("HomeController.Login") + "?url="
 		//登录成功后返回的址为当前
-		returnURL := c.Ctx.Request.URL.Path
+	//	returnURL := c.Ctx.Request.URL.Path
 		//如果ajax请求则返回相应的错码和跳转的地址
-		if c.Ctx.Input.IsAjax() {
+		/*if c.Ctx.Input.IsAjax() {
 			//由于是ajax请求，因此地址是header里的Referer
 			returnURL := c.Ctx.Input.Refer()
 			c.jsonResult(enums.JRCode302, "请登录", urlstr+returnURL)
 		}
-		c.Redirect(urlstr+returnURL, 302)
+		c.Redirect(urlstr+returnURL, 302)*/
+		c.jsonResult(enums.JRCodeFail,"请登录","")
 		c.StopRun()
 	}
 
@@ -72,27 +101,31 @@ func (c *BaseController) checkActionPermission(controller string, action string)
 	if c.curUser.Id == 0 {
 		return false
 	}
-	user := c.GetSession(enums.CURRENT_USER)
-	// 类型断言
-	v, ok := user.(models.User)
-	if ok {
+	//session
+	//user := c.GetSession(enums.CURRENT_USER)
 
-		// 如果超级管理员
-		if v.IsAdmin == true {
+	//redis
+
+	// 类型断言
+	//v, ok := user.(models.User)
+	//if ok {
+	v := c.curUser
+	// 如果超级管理员
+	if v.IsAdmin == true {
+		return true
+	}
+
+	for i, _ := range v.ResourceUrlList {
+		urlfor := strings.TrimSpace(v.ResourceUrlList[i])
+		if len(urlfor) == 0 {
+			continue
+		}
+		strs := strings.Split(urlfor, ",")
+		if len(strs[0]) > 0 && strs[0] == (controller+"."+action) {
 			return true
 		}
-
-		for i, _ := range v.ResourceUrlList {
-			urlfor := strings.TrimSpace(v.ResourceUrlList[i])
-			if len(urlfor) == 0 {
-				continue
-			}
-			strs := strings.Split(urlfor, ",")
-			if len(strs[0]) > 0 && strs[0] == (controller+"."+action) {
-				return true
-			}
-		}
 	}
+	//	}
 	return false
 
 }
