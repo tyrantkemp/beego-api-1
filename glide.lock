@@ -1,5 +1,5 @@
 hash: 1e5df968b81d4274378189999f47cff02b593aca15f7ca67f29aeac2dac9127a
-updated: 2018-02-25T20:26:02.694502062+08:00
+updated: 2018-02-27T16:53:25.426515311+08:00
 imports:
 - name: github.com/astaxie/beego
   version: bf5c5626ab429e66d88602e1ab1ab5fbf4629a01
@@ -12,9 +12,12 @@ imports:
   - grace
   - logs
   - orm
+  - plugins/cors
   - session
   - toolbox
   - utils
+- name: github.com/FZambia/go-sentinel
+  version: 76bd05e8e22f9f8f5e1dd6d3a85b7951da7cce57
 - name: github.com/garyburd/redigo
   version: d1ed5c67e5794de818ea85e6b522fda02623a484
   subpackages:

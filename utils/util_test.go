@@ -22,9 +22,9 @@ func TestInitCache(t *testing.T) {
 	//InitLogs()
 	InitCache()
 	//LogDebug("1212")
-	//SetCache("testname","xiaozhun",0)
+	SetCache("billtestname","xiaozhun",1000)
 	var name string
-	GetCache("testname", &name)
+	GetCache("billtestname", &name)
 	fmt.Println("name :", name)
 
 }

@@ -10,7 +10,7 @@ import (
 	_ "github.com/astaxie/beego/cache/redis"
 
 )
-
+/*
 var cc cache.Cache
 
 func InitCache() {
@@ -128,4 +128,4 @@ func Decode(data []byte, to interface{}) (error) {
 	buf := bytes.NewBuffer(data)
 	dec := gob.NewDecoder(buf)
 	return dec.Decode(to)
-}
+}*/
